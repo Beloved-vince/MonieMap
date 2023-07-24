@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,18 +11,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Sign up | MonieMap ™</title>
-    <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="./assets/css/styles.css">
-    <script src="./assets/js/script.js" defer></script>
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
 </head>
 <body>
     <main class="card-container slideUp-animation">
         <div class="image-container">
             <h1 class="company">MonieMap <sup>&trade;</sup></h1>
-            <img src="./assets/images/signUp.svg" class="illustration" alt="">
+            <img src="{% static 'images/signUp.svg' %}" class="illustration" alt="">
             <p class="quote">Sign up today to get exciting offers..!</p>
             <a href="#btm" class="mobile-btm-nav">
-                <img src="./assets/images/dbl-arrow.png" alt="">
+                <img src="{% static 'images/dbl-arrow.png' %}" alt="">
             </a>
         </div>
         <form action="" method="">
@@ -94,8 +96,8 @@
     <section class="outro-overlay disabled slideUp-animation">
         <h1 class="company">Basket <sup>&trade;</sup></h1>
         <h1 class="outro-greeting">Thank's for signing up..!</h1>
-        <img src="./assets/images/shape.svg" alt="" class="shape">
-        <img src="./assets/images/signedUp.svg" alt="" id="signedUp-illustration" class="slideRight-animation">
+        <img src="{% static 'images/shape.svg' %}" alt="" class="shape">
+        <img src="{% static 'images/signedUp.svg' %}" alt="" id="signedUp-illustration" class="slideRight-animation">
         <div class="author-link">
             &copy;&nbsp;
             <a href="https://www.0xabdulkhalid.ml/">0xabdulkhalid</a> |
