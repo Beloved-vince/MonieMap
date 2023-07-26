@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 import requests
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 def register_new_user(form, request):
@@ -27,11 +28,10 @@ def register_new_user(form, request):
         raise IntegrityError("Email already exist: %s" % form.cleaned_data['email'])
     else:
         newly_created_user = User.objects.create(
-            firstname = form.cleaned_data['firstname'],
-            lastname = form.cleaned_data['lastname'],
+            first_name = form.cleaned_data['first_name'],
+            last_name = form.cleaned_data['last_name'],
             email = form.cleaned_data['email'],
-            password = form.cleaned_data['password'],
-            password_confirm = form.cleaned_data['password_confirm']
+            password = make_password(form.cleaned_data['password'])
         )
     login(request, newly_created_user)
     # return render(request, "index.html")

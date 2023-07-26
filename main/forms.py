@@ -5,8 +5,8 @@ from django.core.validators import RegexValidator, EmailValidator
 class RegisterForm(Form):
     #Form Validation for neccessary authentication details
     
-    firstname = CharField(max_length=50)
-    lastname = CharField(max_length=50)
+    first_name = CharField(max_length=50)
+    last_name = CharField(max_length=50)
     email_validator = EmailValidator(message="Enter a valid email address.")
     email = EmailField(validators=[email_validator])
     phone_regex = RegexValidator(regex=r'^\d{1,11}$', message="Phone number must contain only digits (up to 11).")
