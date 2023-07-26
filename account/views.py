@@ -40,7 +40,7 @@ def register_new_user(form, request):
 class RegisterView(FormView):
     template_name = 'index.html'
     form_class = RegisterForm
-    success_url = 'template/home.html'
+    success_url = 'home.html'
     
     def get(self, request, *args, **kwargs):
         #Handle GET request
