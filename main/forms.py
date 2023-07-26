@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator, EmailValidator
 class RegisterForm(Form):
     #Form Validation for neccessary authentication details
     
-    firtname = CharField(max_length=50)
+    firstname = CharField(max_length=50)
     lastname = CharField(max_length=50)
     email_validator = EmailValidator(message="Enter a valid email address.")
     email = EmailField(validators=[email_validator])
