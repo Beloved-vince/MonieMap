@@ -22,8 +22,7 @@ def register_new_user(form, request):
         - Otherwise create new user and login
     """
     existing_user = User.objects.filter(email=form.cleaned_data['email'])
-    
-    # Check if email exist before proceeding with the authentication
+
     if existing_user.exists():
         password_reset_url = request.scheme + '://' + request.get_host() + reverse('password')
         existing_user.first().email_user(
