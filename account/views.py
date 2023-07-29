@@ -38,13 +38,13 @@ def register_new_user(form, request):
             password = make_password(form.cleaned_data['password'])
         )
     login(request, newly_created_user)
-    # return render(request, "index.html")
+    return render(request, "index.html")
 
 
 class RegisterView(FormView):
     template_name = 'index.html'
     form_class = RegisterForm
-    success_url = '/'
+    success_url = '/register'
     
     def get(self, request, *args, **kwargs):
         #Handle GET request
@@ -54,10 +54,10 @@ class RegisterView(FormView):
         # Handle POST request
         
         form = self.form_class(request.POST)
-        print("error")
         if form.is_valid():
             try:
                 register_new_user(form, request)
+                print("success")
                 messages.success(request, "Thank you for registering. You will be automatically redirected")
                 return HttpResponseRedirect(self.success_url)
             except IntegrityError as e:
