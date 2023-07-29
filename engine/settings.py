@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +76,8 @@ WSGI_APPLICATION = 'engine.wsgi.application'
 import os
 
 DB_PW = os.environ.get("DB_PW")
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 DATABASES = {
     'default': {

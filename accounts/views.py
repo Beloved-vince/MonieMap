@@ -1,6 +1,6 @@
 from typing import Any
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.template.loader import get_template
 from engine import settings
@@ -14,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 import requests
 from django.contrib.auth.hashers import make_password
 
+
+User = get_user_model()
 # Create your views here.
 def register_new_user(form, request):
     """

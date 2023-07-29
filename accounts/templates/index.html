@@ -1,0 +1,147 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#06aa5e">
+    <meta name="msapplication-navbutton-color" content="#06aa5e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Sign up | MonieMap ™</title>
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
+</head>
+<body>
+    <main class="card-container slideUp-animation">
+        <div class="image-container">
+            <h1 class="company">MonieMap <sup>&trade;</sup></h1>
+            <img src="{% static 'images/signUp.svg' %}" class="illustration" alt="">
+            <p class="quote">Sign up today to get exciting offers..!</p>
+            <a href="#btm" class="mobile-btm-nav">
+                <img src="{% static 'images/dbl-arrow.png' %}" alt="">
+            </a>
+        </div>
+        <form action="{% url 'register' %}" method="POST" id="registration-form">
+            {% csrf_token %}
+            <div class="form-container slideRight-animation">
+    
+                <h1 class="form-header">
+                    Get started
+                </h1>
+    
+                <div class="input-container">
+                    <label for="f-name"></label>
+                    <input type="text" name="first_name" id="f-name" required>
+                    <span>
+                        First name
+                    </span>
+                    <div class="error"></div>
+                </div>
+    
+                <div class="input-container">
+                    <label for="l-name"></label>
+                    <input type="text" name="last_name" id="l-name" required>
+                    <span>
+                        Last name
+                    </span>
+                    <div class="error"></div>
+                </div>
+    
+                <div class="input-container">
+                    <label for="mail">
+                    </label>
+                    <input type="email" name="email" id="mail" required>
+                    <span>
+                        E-mail
+                    </span>
+                    <div class="error"></div>
+                </div>
+    
+                <div class="input-container">
+                    <label for="phone">
+                    </label>
+                    <input type="tel" name="phone_number" id="phone" required>
+                    <span>Phone</span>
+                    <div class="error"></div>
+                </div>
+    
+                <div class="input-container">
+                    <label for="user-password"></label>
+                    <input type="password" name="password" id="user-password" class="user-password" required>
+                    <span>Password</span>
+                    <div class="error"></div>
+                </div>
+
+                <div class="input-container">
+                    <label for="user-password-confirm"></label>
+                    <input type="password" name="password_confirm" id="user-password-confirm" class="password-confirmation" required>
+                    <span>
+                        Confirm Password
+                    </span>
+                    <div class="error"></div>
+                </div>
+
+                <div id="btm">
+                    <button type="submit" class="submit-btn">Create Account</button>
+                    <p class="btm-text">
+                        Already have an account..? <span class="btm-text-highlighted">  Log in</span>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </main>
+    <section class="outro-overlay disabled slideUp-animation">
+        <h1 class="company">MonieMap <sup>&trade;</sup></h1>
+        <h1 class="outro-greeting">Thank's for signing up..! <br> redirecting you in a moment</h1>
+        <img src="{% static 'images/shape.svg' %}" alt="" class="shape">
+        <img src="{% static 'images/signedUp.svg' %}" alt="" id="signedUp-illustration" class="slideRight-animation">
+        <div class="author-link">
+            &copy;&nbsp;
+            <a href="https://www.0xabdulkhalid.ml/">0xabdulkhalid</a> |
+            <!-- <a href="https://www.github.com/0xabdulkhalid/basket-sign-up-form/">Source Code</a> -->
+        </div>
+    </section>
+    
+</body>
+<script>
+    // Function to handle form submission
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        const form = document.getElementById('registration-form'); // Get the form element
+
+        // Send the data to the Django view using the Fetch API
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value, // Get CSRF token
+            },
+            body: new FormData(form), // Use FormData directly for form data serialization
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the response data from Django view (if needed)
+            console.log('Response from Django view:', data);
+            // Optionally, you can redirect the user to another page after successful registration
+            // window.location.href = '/success-page/';
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
+    // Add event listener to the form submit button
+    const submitButton = document.querySelector('.submit-btn');
+    submitButton.addEventListener('click', handleSubmit);
+</script>
+
+</html>
