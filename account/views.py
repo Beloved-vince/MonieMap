@@ -16,6 +16,11 @@ from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 def register_new_user(form, request):
+    """
+    Register new user and check for input validation
+        - If email exist raise Integrity error
+        - Otherwise create new user and login
+    """
     existing_user = User.objects.filter(email=form.cleaned_data['email'])
     
     # Check if email exist before proceeding with the authentication
@@ -40,7 +45,7 @@ def register_new_user(form, request):
 class RegisterView(FormView):
     template_name = 'index.html'
     form_class = RegisterForm
-    success_url = 'home.html'
+    success_url = '/'
     
     def get(self, request, *args, **kwargs):
         #Handle GET request
