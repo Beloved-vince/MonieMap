@@ -175,3 +175,17 @@ input[type="submit"]:active
 opacity: 0.8;
 
 }
+.messages {
+    list-style-type: none;
+    padding: 10px;
+    background-color: rgb(124, 224, 24); /* Set the background color of the messages container */
+    color: rgb(255, 255, 255); /* Set the text color of the messages to white */
+}
+
+.messages li {
+    margin-bottom: 5px;
+}
+
+.error {
+    /* Set additional styles for the error messages, if needed */
+}

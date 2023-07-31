@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
-from django.contrib.auth import login
 from .forms import RegisterForm
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login
@@ -37,18 +36,19 @@ def register_new_user(request):
     
     return render(request, 'index.html', {"form": form})
 
-
-
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Replace 'home' with the name of your homepage URL pattern
-        else:
-            messages.error(request, 'Invalid credentials. Please try again.')
-
+        user = authenticate(request, username=email, password=password)
+        try:
+            if user is not None:
+                print(email, password)
+                login(request, user)
+                return redirect('home')  # Replace 'home' with the name of your homepage URL pattern
+            else:
+                print('Invalid credentials. Please try again.')
+                messages.error(request, 'Invalid credentials. Please try again.')
+        except Exception as t:
+            return HttpResponse(t)
     return render(request, 'login.html')
