@@ -33,7 +33,6 @@ phone.addEventListener('keyup', (e)=>{
 
 email.addEventListener('keyup', (e) => {
     let message = errorDisplayers[2];
-    onValidation(message, '*Please provide a valid Email', 0);
 
     // Check for a valid email format
     if (mail.value.includes('@') && mail.value.includes('.com')) {
@@ -60,6 +59,8 @@ email.addEventListener('keyup', (e) => {
             // Handle any errors that occurred during the fetch request
         });
     } else {
+        onValidation(message, '*Please provide a valid Email', 0);
+
     }
 });
 
