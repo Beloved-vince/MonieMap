@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form cllw</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
 <div class="box">
@@ -13,7 +14,7 @@
         <h2>Sign in</h2>
         <div class="inputBox">
             <input type="text" required="required">
-            <span>Username</span>
+            <span>Email</span>
             <i></i>
             </div>
             <div class="inputBox">
