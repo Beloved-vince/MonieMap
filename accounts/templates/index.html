@@ -94,18 +94,7 @@
             </div>
         </form>
     </main>
-    <section class="outro-overlay disabled slideUp-animation">
-        <h1 class="company">MonieMap <sup>&trade;</sup></h1>
-        <h1 class="outro-greeting">Thank's for signing up..! <br> redirecting you in a moment</h1>
-        <img src="{% static 'images/shape.svg' %}" alt="" class="shape">
-        <img src="{% static 'images/signedUp.svg' %}" alt="" id="signedUp-illustration" class="slideRight-animation">
-        <div class="author-link">
-            &copy;&nbsp;
-            <a href="https://www.0xabdulkhalid.ml/">0xabdulkhalid</a> |
-            <!-- <a href="https://www.github.com/0xabdulkhalid/basket-sign-up-form/">Source Code</a> -->
-        </div>
-    </section>
-    
+
 </body>
 <script>
     // Function to handle form submission
@@ -132,7 +121,7 @@
             // Handle the response data from Django view (if needed)
             console.log('Response from Django view:', data);
             // Optionally, you can redirect the user to another page after successful registration
-            // window.location.href = '/success-page/';
+            window.location.href = 'login/';
         })
         .catch((error) => {
             console.error('Error:', error);
