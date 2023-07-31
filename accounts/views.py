@@ -45,7 +45,7 @@ def login_view(request):
             if user is not None:
                 print(email, password)
                 login(request, user)
-                return redirect('home')  # Replace 'home' with the name of your homepage URL pattern
+                return redirect('streak')  # Replace 'home' with the name of your homepage URL pattern
             else:
                 print('Invalid credentials. Please try again.')
                 messages.error(request, 'Invalid credentials. Please try again.')
