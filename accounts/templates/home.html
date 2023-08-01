@@ -1,7 +1,6 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-
 <head>
 	<title>Expense tracker</title>
 	<meta charset="utf-8">
@@ -43,7 +42,7 @@
 			align-items: center
 		}
 	</style>
-	<link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+	<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 </head>
 
 <body>
@@ -51,18 +50,18 @@
 		<nav id="sidebar" class="active">
 			<h1>
 				<a href="index.html" class="logo">
-					<img src="{% static 'images/logo.png' %}" alt="Logo" class="img-fluid">
+					<img src="{% static 'img/logo.png' %}" alt="Logo" class="img-fluid">
 				</a>
 			</h1>
 			<ul class="list-unstyled components mb-5">
 				<li class="active">
-					<a href="index.html"><span class="fa fa-home"></span> Dashboard</a>
+					<a href="{% url 'streak' %}"><span class="fa fa-home"></span> Dashboard</a>
 				</li>
 				<li>
-					<a href="transaction.html"><span class="fa fa-exchange"></span> Add transactions</a>
+					<a href="{% url 'transaction' %}"><span class="fa fa-exchange"></span> Add transactions</a>
 				</li>
 				<li>
-					<a href="history.html"><span class="fa fa-sticky-note"></span> Transaction history</a>
+					<a href="{% url 'history' %}"><span class="fa fa-sticky-note"></span> Transaction history</a>
 				</li>
 			</ul>
 			<div class="footer">
@@ -164,7 +163,7 @@
 
 	<script src="{% static 'js/jquery.min.js' %}"></script>
 	<script src="{% static 'js/popper.js' %}"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
