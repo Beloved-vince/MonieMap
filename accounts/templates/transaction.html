@@ -78,10 +78,11 @@
                 <!-- Transaction Page -->
                 <div class="transaction-page">
                     <h2>Add Transaction</h2>
-                    <form id="transactionForm" class="form-control w-100" style="border: none;">
+                    <form id="transactionForm" class="form-control w-100" style="border: none;" method="POST" action="{% url 'add_transaction' %}">
+                        {% csrf_token %}
                         <div class="row d-flex">
                             <div class="col-md-6 col-sm-12">
-                                <input type="text" class="form-control" id="transactionName" placeholder="Transaction Name" required>
+                                <input type="text" class="form-control" id="transactionName" name="name placeholder="Transaction Name" required>
                             </div>
                             <div class="col-md-6 col-sm-12 justify-content-center">
                                 <div class="mx-2 d-inline">
@@ -94,7 +95,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-12 my-2">
-                                <select class="form-control category-select" id="transactionCategory" required>
+                                <select class="form-control category-select" id="transactionCategory" name="select_type" required>
                                     <option value="" selected disabled>Select Type</option>
                                     <optgroup label="Expenses" id="expenseOptions">
                                         <option value="food"><i class="fas fa-utensils category-icon"></i>Food</option>
@@ -121,7 +122,7 @@
                                         <option value="others"><i class="fas fa-question-circle category-icon"></i>Others</option>
                                         <!-- other expense options -->
                                     </optgroup>
-                                    <optgroup label="Income" id="incomeOptions">
+                                    <optgroup label="Income" id="incomeOptions" name="select_type">
                                         <option value="salary"><i class="fas fa-wallet category-icon"></i>Salary</option>
                                         <option value="awards"><i class="fas fa-trophy category-icon"></i>Awards</option>
                                         <option value="grants"><i class="fas fa-hand-holding-usd category-icon"></i>Grants</option>
@@ -135,10 +136,10 @@
                                 </select>
                             </div>
                             <div class="col-md-6 col-sm-12 my-2">
-                                <input type="date" class="form-control" id="transactionDate" required>
+                                <input type="date" class="form-control" name="date" id="transactionDate" required>
                             </div>
                             <div class="col-md-6 col-sm-12 my-2">
-                                <input type="number" class="form-control" placeholder="Transaction amount" id="transactionAmount" required>
+                                <input type="number" class="form-control" name="amount" placeholder="Transaction amount" id="transactionAmount" required>
                             </div>
                             <div class="col-md-6 col-sm-12 my-2">
                                 <button type="submit" class="btn btn-primary btn-block">Submit</button>
@@ -273,6 +274,48 @@
             updateHistoryPage();
         });
     </script>
+
+
+<script>
+    document.getElementById("transactionForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the form data
+        const formData = new FormData(event.target);
+
+        // Convert form data to JSON format
+        const jsonObject = {};
+        formData.forEach((value, key) => {
+            jsonObject[key] = value;
+        });
+        
+        // Send the data to Django backend using Fetch API
+        fetch("{% url 'add_transaction' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}", // Replace "{{ csrf_token }}" with the actual value of csrf_token in your Django template
+            },
+            body: JSON.stringify(jsonObject),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the response data if necessary
+            console.log("Data received:", data);
+            // Redirect to another page or display a success message, etc.
+        })
+        .catch((error) => {
+            console.error("Error occurred:", error);
+            // Handle errors or display an error message
+        });
+    });
+</script>
+
 </body>
 
 </html>
