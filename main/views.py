@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Transaction
 from .forms  import TransactionForm
+from django.http import JsonResponse
 # from accounts
 
 def user_dashboard(request):
@@ -31,3 +32,10 @@ def transaction(request):
         form =TransactionForm()
         
     return render(request, 'transaction.html', {'form': form})
+
+
+def get_transactions(request):
+    transactions = Transaction.objects.all()
+    data = [{'name': t.name, 'transactionType': t.transactionType, 'select_type': t.select_type,
+             'amount': t.amount, 'date': t.date.strftime('%Y-%m-%d %H:%M:%S')} for t in transactions]
+    return JsonResponse(data, safe=False)

@@ -78,11 +78,11 @@
                 <!-- Transaction Page -->
                 <div class="transaction-page">
                     <h2>Add Transaction</h2>
-                    <form id="transactionForm" class="form-control w-100" style="border: none;" method="POST" action="{% url 'add_transaction' %}">
+                    <form id="transactionForm" class="form-control w-100" style="border: none;" method="POST" action="{% url 'transaction' %}">
                         {% csrf_token %}
                         <div class="row d-flex">
                             <div class="col-md-6 col-sm-12">
-                                <input type="text" class="form-control" id="transactionName" name="name placeholder="Transaction Name" required>
+                                <input type="text" class="form-control" id="transactionName" name="name" placeholder="Transaction Name" required>
                             </div>
                             <div class="col-md-6 col-sm-12 justify-content-center">
                                 <div class="mx-2 d-inline">
@@ -142,7 +142,7 @@
                                 <input type="number" class="form-control" name="amount" placeholder="Transaction amount" id="transactionAmount" required>
                             </div>
                             <div class="col-md-6 col-sm-12 my-2">
-                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                <button type="submit" onclick="sendDataToTransactionView()" class="btn btn-primary btn-block">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -277,43 +277,35 @@
 
 
 <script>
-    document.getElementById("transactionForm").addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent the default form submission
+    // Function to send data to the 'transaction' view using Fetch API
+    function sendDataToTransactionView() {
+        const form = document.getElementById('transactionForm'); // Get the form element
 
-        // Get the form data
-        const formData = new FormData(event.target);
+        // Convert the form data to a FormData object
+        const formData = new FormData(form);
 
-        // Convert form data to JSON format
-        const jsonObject = {};
-        formData.forEach((value, key) => {
-            jsonObject[key] = value;
-        });
-        
-        // Send the data to Django backend using Fetch API
-        fetch("{% url 'add_transaction' %}", {
-            method: "POST",
+        fetch('/dashboard/transaction/', {
+            method: 'POST',
+            body: formData,
             headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": "{{ csrf_token }}", // Replace "{{ csrf_token }}" with the actual value of csrf_token in your Django template
-            },
-            body: JSON.stringify(jsonObject),
-        })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
+                'X-CSRFToken': '{{ csrf_token }}' // Replace this with the actual CSRF token value from your Django template
             }
-            return response.json();
         })
-        .then((data) => {
-            // Handle the response data if necessary
-            console.log("Data received:", data);
-            // Redirect to another page or display a success message, etc.
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // If the view returns JSON response, otherwise use response.text() or response.blob()
         })
-        .catch((error) => {
-            console.error("Error occurred:", error);
-            // Handle errors or display an error message
+        .then(data => {
+            // Handle the successful response data here
+            console.log('Transaction data successfully sent:', data);
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error('Error sending transaction data:', error);
         });
-    });
+    }
 </script>
 
 </body>
