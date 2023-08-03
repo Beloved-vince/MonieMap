@@ -95,53 +95,54 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
     <script>
         function render() {
-            var transactions = JSON.parse(localStorage.getItem("transactions"));
+            var data_json = '{{ data_json|safe }}'; // Get the JSON data from the view context
+            var data = JSON.parse(data_json); // Parse the JSON data
+    
             var table = document.getElementById("911");
-
-            transactions.forEach(function (transaction) {
+    
+            data.forEach(function (transaction) {
                 var createtr = document.createElement("tr");
-
+    
                 var createtd = document.createElement("td");
-                var createtd2 = document.createElement("td"); // Fixed variable name
+                var createtd2 = document.createElement("td");
                 var createtd3 = document.createElement("td");
                 var createtd4 = document.createElement("td");
-
+    
                 var createp = document.createElement("td");
                 var createp2 = document.createElement("td");
                 var createp3 = document.createElement("td");
                 var createp4 = document.createElement("td");
-
+    
                 createtd.appendChild(createp);
                 createtd2.appendChild(createp2);
                 createtd3.appendChild(createp3);
                 createtd4.appendChild(createp4);
-
+    
                 createp.innerHTML = transaction.name;
                 createp2.innerHTML = transaction.date;
-                createp3.innerHTML = '&#8377;  ' + transaction.amount;
-
-
-                if (transaction.type == "expense") {
-                    createp4.innerHTML = '<svg class="status" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" rx="8" fill="#DB2719" fill-opacity="0.3"/><circle cx="8" cy="8" r="4" fill="#DB2719"/></svg>' + transaction.type;
-                }
-                else {
-                    createp4.innerHTML = '<svg class="status" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" rx="8" fill="#DBA32A" fill-opacity="0.14"/><circle cx="8" cy="8" r="4" fill="#7FB519"/></svg>' + transaction.type;
+                createp3.innerHTML = '$  ' + transaction.amount;
+    
+                if (transaction.transactionType == "expense") {
+                    createp4.innerHTML = '<svg class="status" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" rx="8" fill="#DB2719" fill-opacity="0.3"/><circle cx="8" cy="8" r="4" fill="#DB2719"/></svg>' + transaction.transactionType;
+                } else {
+                    createp4.innerHTML = '<svg class="status" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" rx="8" fill="#DBA32A" fill-opacity="0.14"/><circle cx="8" cy="8" r="4" fill="#7FB519"/></svg>' + transaction.transactionType;
                 }
                 createtd.appendChild(createp);
                 createtd2.appendChild(createp2);
                 createtd3.appendChild(createp3);
                 createtd4.appendChild(createp4);
-
+    
                 createtr.appendChild(createtd);
                 createtr.appendChild(createtd2);
                 createtr.appendChild(createtd3);
                 createtr.appendChild(createtd4);
-
+    
                 table.appendChild(createtr);
             });
         }
         render();
     </script>
+    
 </body>
 
 </html>
