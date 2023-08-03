@@ -15,8 +15,11 @@ class DecimalJSONEncoder(json.JSONEncoder):
             return str(obj)
         return super().default(obj)
 
-def user_dashboard(request):
 
+def user_dashboard(request):
+    """
+    Return total of income, expenses and balance
+    """
     transactions = Transaction.objects.all()
     data = [
         {
@@ -29,6 +32,7 @@ def user_dashboard(request):
         for t in transactions
     ]
  
+    # print(data)
     #Calculate total income, total expenses, and balanace and return a json object
     total_income = Decimal(0)
     total_expenses = Decimal(0)
