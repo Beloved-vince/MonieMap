@@ -3,13 +3,11 @@ from .models import Transaction
 from .forms  import TransactionForm
 from django.db.models.functions import TruncMonth
 from django.db  import  models
-
-import json
-# from accounts
-
 import json
 from decimal import Decimal
-from django.http import JsonResponse
+import calendar 
+from django.db.models.functions import ExtractMonth
+from django.utils.dateparse import parse_datetime
 
 class DecimalJSONEncoder(json.JSONEncoder):
     """ JSON Encoder """
@@ -25,14 +23,15 @@ def user_dashboard(request):
     
     Group transactions by month
     """
-    monthly_transactions = Transaction.objects.annotate(month=TruncMonth('date')).values('month').annotate(
-        total_income=models.Sum('amount', filter=models.Q(transactionType='income')),
-        total_expenses=models.Sum('amount', filter=models.Q(transactionType='expense'))
+    monthly_transactions = Transaction.objects.annotate(month=ExtractMonth('date')).values('month').annotate(
+        income=models.Sum('amount', filter=models.Q(transactionType='income')),
+        expense=models.Sum('amount', filter=models.Q(transactionType='expense'))
     ).order_by('month')
 
     # Calculate balance for each month
     for entry in monthly_transactions:
-        entry['balance'] = entry['total_income'] - entry['total_expenses']
+        entry['balance'] = entry['income'] - entry['expense']
+        entry['month'] = calendar.month_name[entry['month']]
 
     # Prepare the data for rendering in the template
     data = [
@@ -47,8 +46,8 @@ def user_dashboard(request):
     ]
 
     # Calculate total income, total expenses, and balance across all transactions
-    total_income = sum(entry['total_income'] for entry in monthly_transactions)
-    total_expenses = sum(entry['total_expenses'] for entry in monthly_transactions)
+    total_income = sum(entry['income'] for entry in monthly_transactions)
+    total_expenses = sum(entry['expense'] for entry in monthly_transactions)
     balance = total_income - total_expenses
 
     data_json = json.dumps(data, cls=DecimalJSONEncoder)
@@ -58,8 +57,8 @@ def user_dashboard(request):
         'balance': str(balance)
     })
     # monthly_transactions_json = json.dumps(list(monthly_transactions), cls=DecimalJSONEncoder)
-
-
+    
+    print(monthly_transactions)
 
     return render(request, 'home.html', context={'total_json': total_json, 'monthly_transactions': monthly_transactions})
 
