@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .models import Transaction
 from .forms  import TransactionForm
+from django.db.models.functions import TruncMonth
+from django.db  import  models
+
 import json
 # from accounts
 
@@ -18,9 +21,20 @@ class DecimalJSONEncoder(json.JSONEncoder):
 
 def user_dashboard(request):
     """
-    Return total of income, expenses and balance
+    Return total of income, expenses and balance for each month
+    
+    Group transactions by month
     """
-    transactions = Transaction.objects.all()
+    monthly_transactions = Transaction.objects.annotate(month=TruncMonth('date')).values('month').annotate(
+        total_income=models.Sum('amount', filter=models.Q(transactionType='income')),
+        total_expenses=models.Sum('amount', filter=models.Q(transactionType='expense'))
+    ).order_by('month')
+
+    # Calculate balance for each month
+    for entry in monthly_transactions:
+        entry['balance'] = entry['total_income'] - entry['total_expenses']
+
+    # Prepare the data for rendering in the template
     data = [
         {
             'name': t.name,
@@ -29,29 +43,26 @@ def user_dashboard(request):
             'amount': str(t.amount),
             'date': t.date.strftime('%Y-%m-%d %H:%M:%S')
         }
-        for t in transactions
+        for t in Transaction.objects.all()
     ]
- 
-    # print(data)
-    #Calculate total income, total expenses, and balanace and return a json object
-    total_income = Decimal(0)
-    total_expenses = Decimal(0)
-    for datum in data:
-        if datum['transactionType'] == 'income':
-            total_income += Decimal(datum['amount'])
-        elif datum['transactionType'] == 'expense':
-            total_expenses += Decimal(datum['amount'])
-    
+
+    # Calculate total income, total expenses, and balance across all transactions
+    total_income = sum(entry['total_income'] for entry in monthly_transactions)
+    total_expenses = sum(entry['total_expenses'] for entry in monthly_transactions)
     balance = total_income - total_expenses
-    
+
     data_json = json.dumps(data, cls=DecimalJSONEncoder)
     total_json = json.dumps({
         'total_income': str(total_income),
         'total_expenses': str(total_expenses),
         'balance': str(balance)
     })
+    # monthly_transactions_json = json.dumps(list(monthly_transactions), cls=DecimalJSONEncoder)
 
-    return render(request, 'home.html', context={'total_json': total_json})
+
+
+    return render(request, 'home.html', context={'total_json': total_json, 'monthly_transactions': monthly_transactions})
+
 
 
 def history(request):

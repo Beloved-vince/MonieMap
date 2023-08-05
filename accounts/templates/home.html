@@ -168,6 +168,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
+		console.log('{{ monthly_transactions|escapejs }}');
+	  </script>
+	  
+	<script>
 		// check if user has visited the site before
 		// if first time, ask user for their name and store in local storage
 		if (localStorage.getItem("name") == null) {

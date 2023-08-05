@@ -26,7 +26,7 @@ function getPreviousMonthNames(numOfMonths) {
 		const monthName = previousMonth.toLocaleString('default', { month: 'long' });
 		monthNames.push(monthName);
 	}
-	console.log(monthNames);
+	console.log(monthNames, );
 	return monthNames;
 }
 
@@ -40,6 +40,8 @@ function setDataForPreviousMonths() {
 	months.forEach(month => {
 		const existingData = JSON.parse(localStorage.getItem(month)) || {};
 		// Check if expense and income fields exist, and initialize them if not
+		console.log(existingData)
+		// console.log(localStorage.getItem(month))
 		if (!existingData.expense) {
 			existingData.expense = getRandomValue(2000, 5000);
 		}
