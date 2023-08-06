@@ -39,17 +39,21 @@ function setDataForPreviousMonths() {
 	}
 	const months = getPreviousMonthNames(new Date().getMonth());
 	console.log(months, "success")
+	month_mi = 'January'
 	months.forEach(month => {
 		console.log(month, "nonoe")
-		const existingData = JSON.parse(localStorage.getItem(month)) || {};
+		// const existingData = JSON.parse(localStorage.getItem(month)) || {};
+		const existingData = window.monthlyTransactionsData[month] || {};
+			// console.log(existData)
 		// Check if expense and income fields exist, and initialize them if not
+		console.log("OOSS")
 		console.log(existingData)
 		// console.log(localStorage.getItem(month))
 		if (!existingData.expense) {
-			existingData.expense = 0
+			existingData.expense = getRandomValue(200, 500)
 		}
 		if (!existingData.income) {
-			existingData.income = 0
+			existingData.income = getRandomValue(200, 500)
 		}
 		monthlyData[month] = existingData;
 	});

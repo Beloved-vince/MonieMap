@@ -23,17 +23,56 @@ def user_dashboard(request):
     
     Group transactions by month
     """
-    monthly_transactions = Transaction.objects.annotate(month=ExtractMonth('date')).values('month').annotate(
+    formatted_data = Transaction.objects.annotate(month=ExtractMonth('date')).values('month').annotate(
         income=models.Sum('amount', filter=models.Q(transactionType='income')),
         expense=models.Sum('amount', filter=models.Q(transactionType='expense'))
     ).order_by('month')
+    
+    monthly_transactions = {}
+    # monthly_transactions = {
+    # "January": {
+    #     'income': 2500,
+    #     'expense': 1800
+    # },
+    # "February": {
+    #     'income': 2800,
+    #     'expense': 2000
+    # },
+    # "March": {
+    #     'income': 3200,
+    #     'expense': 2400
+    # },
+    # "April": {
+    #     'income': 2900,
+    #     'expense': 2100
+    # },
+    # "May": {
+    #     'income': 2700,
+    #     'expense': 1900
+    # },
+    # "June": {
+    #     'income': 3000,
+    #     'expense': 2200
+    # },
+    # "July": {
+    #     'income': 3100,
+    #     'expense': 2300
+    # },
+    # }
+
 
     # Calculate balance for each month
-    for entry in monthly_transactions:
+    for entry in formatted_data:
         entry['balance'] = entry['income'] - entry['expense']
         entry['month'] = calendar.month_name[entry['month']]
-
-    # Prepare the data for rendering in the template
+        income =round(float( entry['income']) if entry['income'] else 0, 2)
+        expense = round(float(entry['expense']) if entry['expense'] else 0, 2)
+        
+        monthly_transactions[entry['month']] = {
+            'income': income,
+            'expense': expense
+        }
+    # Prepare the data for rendering in the template, 
     data = [
         {
             'name': t.name,
@@ -46,8 +85,8 @@ def user_dashboard(request):
     ]
 
     # Calculate total income, total expenses, and balance across all transactions
-    total_income = sum(entry['income'] for entry in monthly_transactions)
-    total_expenses = sum(entry['expense'] for entry in monthly_transactions)
+    total_income = sum(entry['income'] for entry in formatted_data)
+    total_expenses = sum(entry['expense'] for entry in formatted_data)
     balance = total_income - total_expenses
 
     data_json = json.dumps(data, cls=DecimalJSONEncoder)

@@ -168,8 +168,16 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
+		console.log("Done")
 		console.log('{{ monthly_transactions|escapejs }}');
 	  </script>
+	  <!-- Your other HTML content -->
+<script>
+	// Define a JavaScript variable to hold the JSON data
+	var monthlyTransactionsData ={{ monthly_transactions|safe }};
+  </script>
+  <!-- Your other JavaScript code -->
+  
 	  
 	<script>
 		// check if user has visited the site before
