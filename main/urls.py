@@ -5,5 +5,6 @@ urlpatterns = [
     path("current_streak/", views.user_dashboard, name="streak"),
     path('transaction/', views.transaction, name='transaction'),
     path('history/', views.history, name='history'),
+    path('logout', views.logout_view, name='logout'),
     # path('get_transactions/', views.get_transactions, name='get_transactions'),
 ]

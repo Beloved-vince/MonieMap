@@ -6,6 +6,9 @@ import json
 from decimal import Decimal
 import calendar 
 from django.db.models.functions import ExtractMonth
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 
 class DecimalJSONEncoder(json.JSONEncoder):
     """ JSON Encoder """
@@ -30,7 +33,7 @@ def user_dashboard(request):
 
     # Calculate balance for each month
     for entry in formatted_data:
-        entry['balance'] = entry['income'] - entry['expense']
+        # entry['balance'] = float(entry['income'] - entry['expense'])
         entry['month'] = calendar.month_name[entry['month']]
         income =round(float( entry['income']) if entry['income'] else 0, 2)
         expense = round(float(entry['expense']) if entry['expense'] else 0, 2)
@@ -52,9 +55,11 @@ def user_dashboard(request):
     ]
 
     # Calculate total income, total expenses, and balance across all transactions
-    total_income = sum(entry['income'] for entry in formatted_data)
-    total_expenses = sum(entry['expense'] for entry in formatted_data)
+    total_income = sum(entry['income'] if entry['income'] is not None else 0 for entry in formatted_data)
+    total_expenses = sum(entry['expense'] if entry['expense'] is not None else 0 for entry in formatted_data)
     balance = total_income - total_expenses
+    
+    print(type(total_expenses))
 
     data_json = json.dumps(data, cls=DecimalJSONEncoder)
     total_json = json.dumps({
@@ -101,7 +106,10 @@ def transaction(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         
+        print(request.user)
         if form.is_valid():
+            form.instance.user = request.user
+            
             form.save()
         else: 
             print(form.errors)
@@ -109,3 +117,8 @@ def transaction(request):
         form =TransactionForm()
         
     return render(request, 'transaction.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
