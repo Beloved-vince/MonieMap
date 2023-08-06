@@ -1,13 +1,11 @@
 from django.shortcuts import render
 from .models import Transaction
 from .forms  import TransactionForm
-from django.db.models.functions import TruncMonth
 from django.db  import  models
 import json
 from decimal import Decimal
 import calendar 
 from django.db.models.functions import ExtractMonth
-from django.utils.dateparse import parse_datetime
 
 class DecimalJSONEncoder(json.JSONEncoder):
     """ JSON Encoder """
@@ -29,37 +27,6 @@ def user_dashboard(request):
     ).order_by('month')
     
     monthly_transactions = {}
-    # monthly_transactions = {
-    # "January": {
-    #     'income': 2500,
-    #     'expense': 1800
-    # },
-    # "February": {
-    #     'income': 2800,
-    #     'expense': 2000
-    # },
-    # "March": {
-    #     'income': 3200,
-    #     'expense': 2400
-    # },
-    # "April": {
-    #     'income': 2900,
-    #     'expense': 2100
-    # },
-    # "May": {
-    #     'income': 2700,
-    #     'expense': 1900
-    # },
-    # "June": {
-    #     'income': 3000,
-    #     'expense': 2200
-    # },
-    # "July": {
-    #     'income': 3100,
-    #     'expense': 2300
-    # },
-    # }
-
 
     # Calculate balance for each month
     for entry in formatted_data:
@@ -130,6 +97,7 @@ def history(request):
 
 
 def transaction(request):
+    # Get form request
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         
