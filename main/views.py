@@ -84,7 +84,7 @@ def history(request):
     date: date 
     amount: outgoing or incoming amount
     """
-    transactions = Transaction.objects.all()
+    transactions = Transaction.objects.filter(user=request.user)
     data = [
         {
             'name': t.name,
