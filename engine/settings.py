@@ -80,17 +80,23 @@ DB_PW = os.environ.get("DB_PW")
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'tracker',
+#         'USER': 'root',
+#         'PASSWORD': DB_PW,
+#         'HOST':'localhost',
+#         'PORT':'3306',
+#         'OPTIONS':{
+#             'autocommit':True
+#         }
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tracker',
-        'USER': 'root',
-        'PASSWORD': DB_PW,
-        'HOST':'localhost',
-        'PORT':'3306',
-        'OPTIONS':{
-            'autocommit':True
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
