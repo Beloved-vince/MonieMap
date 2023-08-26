@@ -1,4 +1,4 @@
-# Video Hub Project
+# MonieMap Project
 
 ![Repo size](https://img.shields.io/github/repo-size/Beloved-vince/MonieMap)
 ![Pep8 style](https://img.shields.io/badge/PEP8-style%20guide-purple?style=round-square)
