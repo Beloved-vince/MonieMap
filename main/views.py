@@ -84,21 +84,24 @@ def history(request):
     date: date 
     amount: outgoing or incoming amount
     """
-    transactions = Transaction.objects.filter(user=request.user)
-    data = [
-        {
-            'name': t.name,
-            'transactionType': t.transactionType,
-            'select_type': t.select_type,
-            'amount': str(t.amount),  # Convert Decimal to string
-            'date': t.date.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        for t in transactions
-    ]
+    if request.user.is_authenticated:
+        transactions = Transaction.objects.filter(user=request.user)
+        data = [
+            {
+                'name': t.name,
+                'transactionType': t.transactionType,
+                'select_type': t.select_type,
+                'amount': str(t.amount),  # Convert Decimal to string
+                'date': t.date.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            for t in transactions
+        ]
 
-    # Convert the data list to a JSON string using the custom encoder
-    data_json = json.dumps(data, cls=DecimalJSONEncoder)
-    return render(request, 'history.html', context={'data_json': data_json})
+        # Convert the data list to a JSON string using the custom encoder
+        data_json = json.dumps(data, cls=DecimalJSONEncoder)
+        return render(request, 'history.html', context={'data_json': data_json})
+    else:
+        return render(request, "history.html")
 
 
 def transaction(request):
